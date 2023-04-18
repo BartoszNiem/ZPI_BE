@@ -1,35 +1,27 @@
 package com.example.zpi_be.model;
 
 import jakarta.persistence.*;
-import jakarta.annotation.Nonnull
 
 import java.util.HashSet;
 import java.util.Set;
 
 
-
 @Entity
-@Table(	name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
+@Table(name="users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private long id;
 
- //   @NotBlank
-  //  @Size(max = 20)
+    @Column(name = "username")
     private String username;
 
-  //  @NotBlank
-  //  @Size(max = 50)
-   // @Email
+    @Column(name = "email")
     private String email;
 
-  //  @NotBlank
-   // @Size(max = 120)
+    @Column(name = "password")
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -47,11 +39,11 @@ public class User {
         this.password = password;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
