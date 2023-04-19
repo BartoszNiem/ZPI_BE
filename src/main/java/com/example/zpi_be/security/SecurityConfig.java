@@ -1,11 +1,10 @@
 package com.example.zpi_be.security;
 
-
-
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,12 +43,21 @@ public class SecurityConfig {
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
+        http.cors().and()
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/register**",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll()
+                .anyRequest().permitAll()
+//                .anyRequest()
+//                .authenticated()
                 .and()
-                .authenticationProvider(authenticationProvider())
+//                .authenticationProvider(authenticationProvider())
                 .httpBasic();
         return http.build();
     }
@@ -72,11 +80,12 @@ public class SecurityConfig {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+                System.out.println("Jestem w pętli czasu");
                 return APP_USERS
                         .stream()
                         .filter(u -> u.getUsername().equals(email))
                         .findFirst()
-                        .orElseThrow(() -> new UsernameNotFoundException("No user with givin email"));
+                        .orElseThrow(() -> new UsernameNotFoundException("No user with given email"));
             }
         };
     }
