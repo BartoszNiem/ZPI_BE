@@ -27,12 +27,22 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
+    private final static String[] ALLOWED_ENDPOINTS = {
+            "/save"
+    };
+
+    private final static String[] AUTH_ENDPOINTS = {
+            "/users"
+    };
+
     private final static List<UserDetails> APP_USERS = Arrays.asList(
             new User (
                     "bn@interia.pl",
                     new BCryptPasswordEncoder().encode("password"),
                     Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
             ),
+
             new User (
                     "ds@interia.pl",
                     "password",
@@ -43,22 +53,22 @@ public class SecurityConfig {
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors().and()
-                .csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/register**",
-                        "/js/**",
-                        "/css/**",
-                        "/img/**")
-                .permitAll()
-                .requestMatchers(HttpMethod.OPTIONS, "/**")
-                .permitAll()
-                .anyRequest().permitAll()
-//                .anyRequest()
-//                .authenticated()
+        http
+                .httpBasic()
                 .and()
-//                .authenticationProvider(authenticationProvider())
-                .httpBasic();
+                .authorizeHttpRequests()
+                .requestMatchers("/save")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .authenticationProvider(authenticationProvider())
+                .cors().and()
+                .csrf().disable();
+//                .authorizeHttpRequests(request -> request.requestMatchers(ALLOWED_ENDPOINTS).permitAll().requestMatchers(AUTH_ENDPOINTS).permitAll())
+//                .cors().and()
+//                .csrf().disable()
+//                .authenticationProvider(authenticationProvider());
         return http.build();
     }
 
