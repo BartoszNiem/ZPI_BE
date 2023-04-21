@@ -1,10 +1,9 @@
 package com.example.zpi_be.security;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import com.example.zpi_be.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,35 +26,14 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
-    private final static String[] ALLOWED_ENDPOINTS = {
-            "/save"
-    };
-
-    private final static String[] AUTH_ENDPOINTS = {
-            "/users"
-    };
-
-    private final static List<UserDetails> APP_USERS = Arrays.asList(
-            new User (
-                    "bn@interia.pl",
-                    new BCryptPasswordEncoder().encode("password"),
-                    Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
-            ),
-
-            new User (
-                    "ds@interia.pl",
-                    "password",
-                    Collections.singleton(new SimpleGrantedAuthority("USER"))
-            )
-    );
+    @Autowired
+    private UserService userService;
 
     @Bean
-    @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic()
-                .and()
+                .cors().and()
+                .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/save")
                 .permitAll()
@@ -63,12 +41,7 @@ public class SecurityConfig {
                 .authenticated()
                 .and()
                 .authenticationProvider(authenticationProvider())
-                .cors().and()
-                .csrf().disable();
-//                .authorizeHttpRequests(request -> request.requestMatchers(ALLOWED_ENDPOINTS).permitAll().requestMatchers(AUTH_ENDPOINTS).permitAll())
-//                .cors().and()
-//                .csrf().disable()
-//                .authenticationProvider(authenticationProvider());
+                .httpBasic();
         return http.build();
     }
 
@@ -90,8 +63,15 @@ public class SecurityConfig {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-                System.out.println("Jestem w pętli czasu");
-                return APP_USERS
+                List<UserDetails> users = new ArrayList<>();
+                for (com.example.zpi_be.model.User user : userService.getUsers()) {
+                    users.add( new User (
+                            user.getEmail(),
+                            user.getPassword(),
+                            Collections.singleton(new SimpleGrantedAuthority(user.getRole()))
+                    ));
+                }
+                return users
                         .stream()
                         .filter(u -> u.getUsername().equals(email))
                         .findFirst()
