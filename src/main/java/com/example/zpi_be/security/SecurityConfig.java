@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/save")
+                .requestMatchers("/register")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
