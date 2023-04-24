@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("")
@@ -31,10 +30,5 @@ public class MainController {
     public User authenticate(@RequestBody Login login) {
         User user = userService.getUserByEmail(login.getEmail());
         return user;
-    }
-
-    @GetMapping("/users")
-    public List<User> getUsers() {
-        return userService.getUsers();
     }
 }
