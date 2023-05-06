@@ -28,6 +28,9 @@ public class User {
     @Column(name = "descri")
     private String description;
 
+    @Column(name = "avatar", unique = false, nullable = true, length = 100_000)
+    private byte[] avatar;
+
     public User() {
     }
 
@@ -35,6 +38,14 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     public long getId() {
