@@ -5,6 +5,8 @@ import com.example.zpi_be.model.User;
 import com.example.zpi_be.service.UserService;
 import com.example.zpi_be.utils.ImageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,9 +44,22 @@ public class UserController {
         return dbUser;
     }
 
-    @GetMapping("users/{email}")
+    @GetMapping("/avatar/{user_id}")
+    public ResponseEntity<byte[]> getAvatar(@PathVariable Long user_id){
+        User dbUser = userService.getUserById(user_id);
+        if(dbUser.getAvatar() != null){
+            return ResponseEntity.ok()
+                    .body(ImageUtility.decompressImage(dbUser.getAvatar()));
+        }
+        return ResponseEntity.ofNullable(ImageUtility.decompressImage(dbUser.getAvatar()));
+    }
+
+    @GetMapping("/{email}")
     public User getUserByEmail(@PathVariable String email){
         User dbUser = userService.getUserByEmail(email);
+        if(dbUser.getAvatar() != null){
+            dbUser.setAvatar(ImageUtility.decompressImage(dbUser.getAvatar()));
+        }
         return dbUser;
     }
 
