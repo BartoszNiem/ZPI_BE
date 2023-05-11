@@ -16,6 +16,7 @@ public class PostService {
     @Autowired
     PostRepo postRepo;
 
+
     public Post savePost(Post post){
         postRepo.save(post);
         return post;

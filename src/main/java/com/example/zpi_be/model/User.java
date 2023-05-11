@@ -16,6 +16,11 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
     @Column(name = "email", unique=true)
     private String email;
 
@@ -38,6 +43,22 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public byte[] getAvatar() {
