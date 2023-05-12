@@ -1,7 +1,10 @@
 {
     "id": 0,
+    "firstName": "Django",
+    "lastName": "Unchained",
     "username": "ds@interia.pl",
     "email": "ds@interia.pl",
     "password": "password",
+    "description": "dobby",
     "role": "ADMIN"
 }

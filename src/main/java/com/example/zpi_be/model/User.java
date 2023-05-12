@@ -33,7 +33,7 @@ public class User {
     @Column(name = "descri")
     private String description;
 
-    @Column(name = "avatar", unique = false, nullable = true, length = 100_000)
+    @Column(name = "avatar", length = 100_000)
     private byte[] avatar;
 
     public User() {
