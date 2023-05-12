@@ -33,7 +33,7 @@ public class UserController {
         dbUser.setUsername(user.getUsername());
         dbUser.setDescription(user.getDescription());
         userService.save(dbUser);
-        return user;
+        return dbUser;
     }
 
     @PutMapping("set_avatar/{user_id}")
