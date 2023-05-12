@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PutMapping("set_avatar/{user_id}")
-    public User setAvatarForUserWithId(@RequestParam("image") MultipartFile file, @PathVariable Long user_id) throws IOException {
+    public User setAvatarForUserWithId(@RequestParam("avatar") MultipartFile file, @PathVariable Long user_id) throws IOException {
         User dbUser = userService.getUserById(user_id);
         dbUser.setAvatar(ImageUtility.compressImage(file.getBytes()));
         userService.save(dbUser);
