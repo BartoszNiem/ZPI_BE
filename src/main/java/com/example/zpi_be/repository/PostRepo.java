@@ -14,6 +14,6 @@ import java.util.List;
 @Repository
 public interface PostRepo extends JpaRepository<Post, Long> {
 
-    @Query("SELECT posts FROM Post posts WHERE posts.owner_id = ?1")
+    @Query("SELECT posts FROM Post posts WHERE posts.ownerId = ?1")
     List<Post> getPostsByOwnerId(Long owner_id);
 }

@@ -46,15 +46,15 @@ public class UserController {
         return dbUser;
     }
 
-    @GetMapping("/avatar/{user_id}")
-    public ResponseEntity<byte[]> getAvatar(@PathVariable Long user_id){
-        User dbUser = userService.getUserById(user_id);
-        if(dbUser.getAvatar() != null){
-            return ResponseEntity.ok()
-                    .body(ImageUtility.decompressImage(dbUser.getAvatar()));
-        }
-        return ResponseEntity.ofNullable(ImageUtility.decompressImage(dbUser.getAvatar()));
-    }
+//    @GetMapping("/avatar/{user_id}")
+//    public ResponseEntity<byte[]> getAvatar(@PathVariable Long user_id){
+//        User dbUser = userService.getUserById(user_id);
+//        if(dbUser.getAvatar() != null){
+//            return ResponseEntity.ok()
+//                    .body(ImageUtility.decompressImage(dbUser.getAvatar()));
+//        }
+//        return ResponseEntity.ofNullable(ImageUtility.decompressImage(dbUser.getAvatar()));
+//    }
 
     @GetMapping("/{email}")
     public User getUserByEmail(@PathVariable String email){

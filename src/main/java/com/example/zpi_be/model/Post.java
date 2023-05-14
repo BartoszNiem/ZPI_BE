@@ -13,7 +13,7 @@ public class Post {
 
 
     @Column(name = "owner_id")
-    private long owner_id;
+    private long ownerId;
 
 
     @Column(name = "content")
@@ -22,9 +22,9 @@ public class Post {
     public Post() {
     }
 
-    public Post(long id, long owner_id, String content) {
+    public Post(long id, long ownerId, String content) {
         this.id = id;
-        this.owner_id = owner_id;
+        this.ownerId = ownerId;
         this.content = content;
     }
 
@@ -36,12 +36,12 @@ public class Post {
         this.id = id;
     }
 
-    public long getOwner_id() {
-        return owner_id;
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner_id(long owner_id) {
-        this.owner_id = owner_id;
+    public void setOwnerId(long owner_id) {
+        this.ownerId = owner_id;
     }
 
     public String getContent() {

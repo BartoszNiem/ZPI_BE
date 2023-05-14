@@ -35,6 +35,7 @@ public class PostController {
         Post dbPost = null;
         try{
             dbPost = postService.findPostById(post_id);
+            postService.deletePostById(post_id);
         }catch (RuntimeException ex){
             ex.printStackTrace();
         }

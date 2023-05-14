@@ -22,6 +22,9 @@ public class MainController {
     @PostMapping("/register")
     public User save(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFirstName("");
+        user.setLastName("");
+        user.setDescription("");
         userService.save(user);
         return user;
     }
