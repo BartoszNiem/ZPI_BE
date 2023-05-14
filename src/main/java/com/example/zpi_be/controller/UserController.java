@@ -30,6 +30,8 @@ public class UserController {
     public User updateUser(@RequestBody User user) {
 
         User dbUser = userService.getUserById(user.getId());
+        dbUser.setFirstName(user.getFirstName());
+        dbUser.setLastName(user.getLastName());
         dbUser.setUsername(user.getUsername());
         dbUser.setDescription(user.getDescription());
         userService.save(dbUser);
