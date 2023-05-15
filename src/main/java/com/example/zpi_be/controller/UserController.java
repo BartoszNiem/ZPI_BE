@@ -5,8 +5,10 @@ import com.example.zpi_be.model.User;
 import com.example.zpi_be.service.UserService;
 import com.example.zpi_be.utils.ImageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +22,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("")
     public List<User> getUsers() {
@@ -64,6 +69,27 @@ public class UserController {
         }
         return dbUser;
     }
+
+    @PutMapping("/password_change/{id}")
+    public boolean passwordChange(@PathVariable Long id, @RequestBody String newPassword){
+        User dbUser = userService.getUserById(id);
+        dbUser.setPassword(passwordEncoder.encode(newPassword));
+        userService.save(dbUser);
+        return true;
+    }
+
+    @PostMapping("/validate_password/{id}")
+    public ResponseEntity<Void> validatePassword(@PathVariable Long id, @RequestBody String password){
+        User dbUser = userService.getUserById(id);
+        if(passwordEncoder.matches(password, dbUser.getPassword())){
+            return new ResponseEntity<Void>( HttpStatus.OK );
+        }
+        else{
+            return new ResponseEntity<Void>( HttpStatus.NOT_FOUND );
+        }
+    }
+
+
 
 
 }
