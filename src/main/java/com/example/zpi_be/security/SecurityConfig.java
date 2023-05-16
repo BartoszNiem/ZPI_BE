@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/register")
+                .requestMatchers("/register", "/posts")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
