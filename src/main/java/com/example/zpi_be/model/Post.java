@@ -9,11 +9,11 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private long id;
+    private Long id;
 
 
     @Column(name = "owner_id")
-    private long ownerId;
+    private Long ownerId;
 
 
     @Column(name = "content")
@@ -22,25 +22,25 @@ public class Post {
     public Post() {
     }
 
-    public Post(long id, long ownerId, String content) {
+    public Post(Long id, Long ownerId, String content) {
         this.id = id;
         this.ownerId = ownerId;
         this.content = content;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getOwnerId() {
+    public Long getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(long owner_id) {
+    public void setOwnerId(Long owner_id) {
         this.ownerId = owner_id;
     }
 

@@ -2,23 +2,23 @@ package com.example.zpi_be.model;
 
 public class PostResponse {
     private Long id;
-    private String userName;
     private String author;
+    private String content;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getContent() {
+    public String getAuthor() {
         return author;
     }
 
+    public void setAuthor(String userName) {
+        this.author = userName;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
     public void setContent(String content) {
-        this.author = content;
+        this.content = content;
     }
 
     public Long getId() {

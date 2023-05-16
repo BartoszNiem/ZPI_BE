@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,10 +30,14 @@ public class PostController {
     @GetMapping("")
     List<PostResponse> getAllPosts() {
         List<Post> posts = postService.getAllPosts();
-        return posts.stream().map(this::getPostResponse).collect(Collectors.toList());
+        return posts.stream()
+                .map(this::getPostResponse)
+                .sorted(Comparator.comparingLong(PostResponse::getId).reversed())
+                .collect(Collectors.toList());
     }
+
     @PostMapping("/newPost")
-    Post saveNewPost(@RequestBody PostRequest postRequest){
+    Post saveNewPost(@RequestBody PostRequest postRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String email = userDetails.getUsername();
@@ -45,21 +50,21 @@ public class PostController {
     }
 
     @DeleteMapping("/delete/{post_id}")
-    Post deletePost(@PathVariable Long post_id){
+    Post deletePost(@PathVariable Long post_id) {
         Post dbPost = null;
-        try{
+        try {
             dbPost = postService.findPostById(post_id);
             postService.deletePostById(post_id);
-        }catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
         return dbPost;
     }
 
-    private PostResponse getPostResponse(Post post){
+    private PostResponse getPostResponse(Post post) {
         User user = userService.getUserById(post.getOwnerId());
         PostResponse postResponse = new PostResponse();
-        postResponse.setUserName(user.getUsername());
+        postResponse.setAuthor(user.getUsername());
         postResponse.setContent(post.getContent());
         postResponse.setId(post.getId());
         return postResponse;
