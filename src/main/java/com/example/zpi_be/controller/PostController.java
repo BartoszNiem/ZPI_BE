@@ -1,9 +1,6 @@
 package com.example.zpi_be.controller;
 
-import com.example.zpi_be.model.Post;
-import com.example.zpi_be.model.PostRequest;
-import com.example.zpi_be.model.PostResponse;
-import com.example.zpi_be.model.User;
+import com.example.zpi_be.model.*;
 import com.example.zpi_be.service.PostService;
 import com.example.zpi_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
