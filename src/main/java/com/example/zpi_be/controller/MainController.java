@@ -1,7 +1,8 @@
 package com.example.zpi_be.controller;
 
-import com.example.zpi_be.model.Login;
+import com.example.zpi_be.model.UserLoginRequest;
 import com.example.zpi_be.model.User;
+import com.example.zpi_be.model.UserRegisterRequest;
 import com.example.zpi_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,23 +21,18 @@ public class MainController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public User save(@RequestBody User user) throws Exception {
-        if(userService.getUserByEmail(user.getEmail()) == null){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setFirstName("");
-            user.setLastName("");
-            user.setDescription("");
-            userService.save(user);
-            return user;
-        }
-        else{
-           throw new Exception("Email in use");
-        }
+    public User save(@RequestBody UserRegisterRequest userRegisterRequest) {
+        User user = new User();
+        user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
+        user.setUsername(userRegisterRequest.getUsername());
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setRole("USER");
+        userService.save(user);
+        return user;
     }
 
     @PostMapping("/login")
-    public User authenticate(@RequestBody Login login) {
-        User user = userService.getUserByEmail(login.getEmail());
-        return user;
+    public User authenticate(@RequestBody UserLoginRequest login) {
+        return userService.getUserByEmail(login.getEmail());
     }
 }
