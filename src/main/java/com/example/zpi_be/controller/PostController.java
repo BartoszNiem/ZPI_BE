@@ -1,12 +1,16 @@
 package com.example.zpi_be.controller;
 
 import com.example.zpi_be.model.Post;
-import com.example.zpi_be.model.User;
+import com.example.zpi_be.model.PostComments;
 import com.example.zpi_be.service.PostService;
 import com.example.zpi_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -26,6 +30,10 @@ public class PostController {
     }
     @PostMapping("/newPost")
     Post saveNewPost(@RequestBody Post post){
+        if(post.getDate() == null){
+            ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
+            post.setDate(date);
+        }
         postService.savePost(post);
         return post;
     }
@@ -40,5 +48,18 @@ public class PostController {
             ex.printStackTrace();
         }
         return dbPost;
+    }
+
+    @PostMapping("/add_comment")
+    PostComments addComment(@RequestBody PostComments comment){
+        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
+        comment.setDate(date);
+        postService.addComment(comment);
+        return comment;
+    }
+
+    @GetMapping("/get_comments/{post_id}")
+    List<PostComments> getPostComments(@PathVariable Long post_id){
+        return postService.getPostComments(post_id);
     }
 }

@@ -20,13 +20,18 @@ public class MainController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public User save(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setFirstName("");
-        user.setLastName("");
-        user.setDescription("");
-        userService.save(user);
-        return user;
+    public User save(@RequestBody User user) throws Exception {
+        if(userService.getUserByEmail(user.getEmail()) == null){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setFirstName("");
+            user.setLastName("");
+            user.setDescription("");
+            userService.save(user);
+            return user;
+        }
+        else{
+           throw new Exception("Email in use");
+        }
     }
 
     @PostMapping("/login")

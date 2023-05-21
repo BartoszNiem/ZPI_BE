@@ -1,6 +1,8 @@
 package com.example.zpi_be.service;
 
 import com.example.zpi_be.model.Post;
+import com.example.zpi_be.model.PostComments;
+import com.example.zpi_be.repository.PostCommentsRepo;
 import com.example.zpi_be.repository.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class PostService {
     @Autowired
     PostRepo postRepo;
 
+    @Autowired
+    PostCommentsRepo postCommentsRepo;
 
     public Post savePost(Post post){
         postRepo.save(post);
@@ -46,6 +50,15 @@ public class PostService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public PostComments addComment(PostComments comment){
+       postCommentsRepo.save(comment);
+       return comment;
+    }
+
+    public List<PostComments> getPostComments(Long postId){
+        return postCommentsRepo.getCommentsByPostId(postId);
     }
 
 

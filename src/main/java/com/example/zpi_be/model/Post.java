@@ -2,6 +2,9 @@ package com.example.zpi_be.model;
 
 import jakarta.persistence.*;
 
+import java.time.ZonedDateTime;
+import java.util.Set;
+
 @Entity
 @Table(name="posts")
 public class Post {
@@ -19,6 +22,11 @@ public class Post {
     @Column(name = "content")
     private String content;
 
+    @Column(name="date_time")
+    private ZonedDateTime date;
+
+
+
     public Post() {
     }
 
@@ -27,6 +35,16 @@ public class Post {
         this.ownerId = ownerId;
         this.content = content;
     }
+
+
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
+    }
+
 
     public long getId() {
         return id;
