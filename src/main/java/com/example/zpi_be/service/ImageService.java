@@ -10,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,9 @@ public class ImageService {
 
     public Image saveNewImage(MultipartFile file, User user, Integer category, String description) throws IOException {
         String filePath = FOLDER_PATH+file.getOriginalFilename();
+
+        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
+
         Image image = new Image();
         image.setOwnerId(user.getId());
         image.setCategory(category);
@@ -33,6 +39,7 @@ public class ImageService {
         image.setUsername(user.getUsername());
         image.setName(file.getOriginalFilename());
         image.setFilePath(filePath);
+        image.setDate(date);
         imageRepo.save(image);
         file.transferTo(new File(filePath));
         return image;
