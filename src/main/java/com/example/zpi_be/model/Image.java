@@ -21,6 +21,9 @@ public class Image {
     @Column(name = "name")
     private String name;
 
+    @Column(name="username")
+    private String username;
+
     @Column(name = "category")
     private Integer category;
 
@@ -30,6 +33,14 @@ public class Image {
     @Column(name="date_time")
     private ZonedDateTime date;
     public Image() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Image(Long id, Long ownerId, String filePath, Integer category, String description, ZonedDateTime date) {

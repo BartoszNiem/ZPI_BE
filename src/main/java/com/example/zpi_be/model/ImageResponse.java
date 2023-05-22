@@ -11,6 +11,7 @@ public class ImageResponse {
     private Long ownerId;
     private byte[] imageData;
     private String name;
+    private String username;
     private Integer category;
     private String description;
     private ZonedDateTime date;
@@ -25,6 +26,14 @@ public class ImageResponse {
         this.category = category;
         this.description = description;
         this.date = date;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getId() {

@@ -24,6 +24,7 @@ public class ImageController {
         for (Image image: imageService.getAllImages()) {
             ImageResponse imageResponse = new ImageResponse();
             imageResponse.setId(image.getId());
+            imageResponse.setUsername(image.getUsername());
             imageResponse.setCategory(image.getCategory());
             imageResponse.setDate(image.getDate());
             imageResponse.setImageData(imageService.downloadImageFromFileSystem(image.getFilePath()));

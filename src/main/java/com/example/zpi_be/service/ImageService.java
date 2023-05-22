@@ -18,7 +18,7 @@ public class ImageService {
     @Autowired
     ImageRepo imageRepo;
 
-    private final String FOLDER_PATH="/Users/bniem/Desktop/MyFiles/";
+    private final String FOLDER_PATH="/Users/bniem/ZPI_FILES/";
     public List<Image> getAllImages(){
         return imageRepo.findAll();
     }
