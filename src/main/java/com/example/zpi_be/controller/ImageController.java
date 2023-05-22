@@ -2,12 +2,17 @@ package com.example.zpi_be.controller;
 
 import com.example.zpi_be.model.Image;
 import com.example.zpi_be.model.ImageResponse;
+import com.example.zpi_be.model.User;
 import com.example.zpi_be.service.ImageService;
+import com.example.zpi_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +22,8 @@ import java.util.List;
 public class ImageController {
     @Autowired
     ImageService imageService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("")
     public List<ImageResponse> getAllImages() throws IOException {
@@ -36,12 +43,15 @@ public class ImageController {
         return listOfImages;
     }
 
-    @PostMapping("/newImage")
-    public Image saveNewImage(@RequestParam("image") MultipartFile file, @RequestBody Image image){
+    @PostMapping("/newImage/{user_id}/{category}/{description}")
+    public Image saveNewImage(@RequestParam("image") MultipartFile file, @PathVariable Long user_id, @PathVariable Integer category, @PathVariable String description){
         try {
-            return imageService.saveNewImage(image, file);
+            User dbUser = userService.getUserById(user_id);
+            return imageService.saveNewImage(file, dbUser, category, description);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+
 }

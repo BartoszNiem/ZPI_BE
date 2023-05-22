@@ -1,6 +1,7 @@
 package com.example.zpi_be.service;
 
 import com.example.zpi_be.model.Image;
+import com.example.zpi_be.model.User;
 import com.example.zpi_be.repository.ImageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,18 @@ public class ImageService {
     @Autowired
     ImageRepo imageRepo;
 
-    private final String FOLDER_PATH="/Users/bniem/ZPI_FILES/";
+    private final String FOLDER_PATH="C:/Users/bniem/ZPI_FILES/";
     public List<Image> getAllImages(){
         return imageRepo.findAll();
     }
 
-    public Image saveNewImage(Image image, MultipartFile file) throws IOException {
+    public Image saveNewImage(MultipartFile file, User user, Integer category, String description) throws IOException {
         String filePath = FOLDER_PATH+file.getOriginalFilename();
+        Image image = new Image();
+        image.setOwnerId(user.getId());
+        image.setCategory(category);
+        image.setDescription(description);
+        image.setUsername(user.getUsername());
         image.setName(file.getOriginalFilename());
         image.setFilePath(filePath);
         imageRepo.save(image);
