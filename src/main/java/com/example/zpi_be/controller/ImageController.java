@@ -6,6 +6,10 @@ import com.example.zpi_be.model.User;
 import com.example.zpi_be.service.ImageService;
 import com.example.zpi_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,6 +47,29 @@ public class ImageController {
         return listOfImages;
     }
 
+//    @GetMapping("/{offset}/{pageSize}")
+//    public Page<ImageResponse> getAllImagesPagination(@PathVariable Integer offset, @PathVariable Integer pageSize) throws IOException {
+//        List<ImageResponse> listOfImages = new ArrayList<>();
+//        for (Image image: imageService.getAllImages()) {
+//            ImageResponse imageResponse = new ImageResponse();
+//            imageResponse.setId(image.getId());
+//            imageResponse.setUsername(image.getUsername());
+//            imageResponse.setCategory(image.getCategory());
+//            imageResponse.setDate(image.getDate());
+//            imageResponse.setImageData(imageService.downloadImageFromFileSystem(image.getName()));
+//            imageResponse.setDescription(image.getDescription());
+//            imageResponse.setName(image.getName());
+//            imageResponse.setOwnerId(image.getOwnerId());
+//            listOfImages.add(imageResponse);
+//        }
+//        final int start = offset;
+//        final int end = Math.min((start + pageSize), listOfImages.size());
+//        final Page<ImageResponse> page = new PageImpl<>(listOfImages.subList(start, end), new PageRequest(offset, pageSize, new Sort(Sort.Direction.ASC, "date" ) ), listOfImages.size());
+//        return listOfImages;
+//    }
+
+
+
     @PostMapping("/newImage/{user_id}/{category}/{description}")
     public Image saveNewImage(@RequestParam("image") MultipartFile file, @PathVariable Long user_id, @PathVariable Integer category, @PathVariable String description){
         try {
@@ -52,6 +79,7 @@ public class ImageController {
             throw new RuntimeException(e);
         }
     }
+
 
 
 }

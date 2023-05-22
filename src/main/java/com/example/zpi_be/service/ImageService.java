@@ -5,6 +5,8 @@ import com.example.zpi_be.model.User;
 import com.example.zpi_be.repository.ImageRepo;
 import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +30,10 @@ public class ImageService {
 
     public List<Image> getAllImages(){
         return imageRepo.findAll();
+    }
+
+    public Page<Image> getAllImages(int offset, int pageSize){
+        return imageRepo.findAll(PageRequest.of(offset, pageSize));
     }
 
     public Image saveNewImage(MultipartFile file, User user, Integer category, String description) throws IOException {
