@@ -3,10 +3,12 @@ package com.example.zpi_be.service;
 import com.example.zpi_be.model.Image;
 import com.example.zpi_be.model.User;
 import com.example.zpi_be.repository.ImageRepo;
+import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sound.midi.SysexMessage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,16 +24,16 @@ public class ImageService {
     @Autowired
     ImageRepo imageRepo;
 
-    private final String FOLDER_PATH="C:/Users/bniem/ZPI_FILES/";
+    private String FOLDER_PATH="";
+
     public List<Image> getAllImages(){
         return imageRepo.findAll();
     }
 
     public Image saveNewImage(MultipartFile file, User user, Integer category, String description) throws IOException {
+        this.FOLDER_PATH = new File("").getAbsolutePath() + "/images/";
+        System.out.println(this.FOLDER_PATH);
         String filePath = FOLDER_PATH+file.getOriginalFilename();
-
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
-
         Image image = new Image();
         image.setOwnerId(user.getId());
         image.setCategory(category);
@@ -39,6 +41,8 @@ public class ImageService {
         image.setUsername(user.getUsername());
         image.setName(file.getOriginalFilename());
         image.setFilePath(filePath);
+
+        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
         image.setDate(date);
         imageRepo.save(image);
         file.transferTo(new File(filePath));

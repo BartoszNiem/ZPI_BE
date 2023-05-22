@@ -34,10 +34,10 @@ public class ImageController {
             imageResponse.setUsername(image.getUsername());
             imageResponse.setCategory(image.getCategory());
             imageResponse.setDate(image.getDate());
-            imageResponse.setImageData(imageService.downloadImageFromFileSystem(image.getFilePath()));
+            imageResponse.setImageData(imageService.downloadImageFromFileSystem(image.getName()));
             imageResponse.setDescription(image.getDescription());
             imageResponse.setName(image.getName());
-            imageResponse.setOwnerId(imageResponse.getOwnerId());
+            imageResponse.setOwnerId(image.getOwnerId());
             listOfImages.add(imageResponse);
         }
         return listOfImages;
