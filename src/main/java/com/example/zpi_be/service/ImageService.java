@@ -1,7 +1,8 @@
 package com.example.zpi_be.service;
 
-import com.example.zpi_be.model.Image;
-import com.example.zpi_be.model.User;
+import com.example.zpi_be.model.*;
+import com.example.zpi_be.repository.ImageCommentRepo;
+import com.example.zpi_be.repository.ImageRatingRepo;
 import com.example.zpi_be.repository.ImageRepo;
 import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,19 @@ public class ImageService {
     @Autowired
     ImageRepo imageRepo;
 
+    @Autowired
+    ImageCommentRepo imageCommentRepo;
+
     private String FOLDER_PATH="";
+
+    @Autowired
+    private ImageRatingRepo imageRatingRepo;
 
     public List<Image> getAllImages(){
         return imageRepo.findAll();
+    }
+    public List<Image> getAllUsersImagesById(Long user_id){
+        return imageRepo.findAll().stream().filter(image -> image.getOwnerId() == user_id).toList();
     }
 
     public Page<Image> getAllImages(int offset, int pageSize){
@@ -48,10 +58,18 @@ public class ImageService {
         image.setName(file.getOriginalFilename());
         image.setFilePath(filePath);
 
+        image.setCurrentRating(0.00);
+        image.setNumberOfRatings(0);
+
         ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
         image.setDate(date);
         imageRepo.save(image);
         file.transferTo(new File(filePath));
+        return image;
+    }
+
+    public Image updateImage(Image image){
+        imageRepo.save(image);
         return image;
     }
 
@@ -62,5 +80,29 @@ public class ImageService {
         return images;
     }
 
+    public ImageComment addComment(ImageComment comment){
+        imageCommentRepo.save(comment);
+        return comment;
+    }
 
+    public List<ImageComment> getImageComments(Long imageId){
+        return imageCommentRepo.getCommentsByImageId(imageId);
+    }
+
+
+    public Image getImageById(Long imageId) {
+        if( imageRepo.findById(imageId).isPresent()){
+            return imageRepo.findById(imageId).get();
+        }
+        return null;
+    }
+
+    public ImageRating getImageRating(Long ownerId, Long imageId) {
+        return imageRatingRepo.getImageRatingByOwnerIdAndImageId(ownerId, imageId);
+    }
+
+    public ImageRating saveRating(ImageRating dbRating) {
+        imageRatingRepo.save(dbRating);
+        return dbRating;
+    }
 }
