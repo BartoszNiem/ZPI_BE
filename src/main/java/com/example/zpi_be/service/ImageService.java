@@ -58,8 +58,8 @@ public class ImageService {
         image.setName(file.getOriginalFilename());
         image.setFilePath(filePath);
 
-        image.setCurrentRating(0.00);
-        image.setNumberOfRatings(0);
+        image.setCurrentRating(5.00);
+        image.setNumberOfRatings(1);
 
         ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
         image.setDate(date);

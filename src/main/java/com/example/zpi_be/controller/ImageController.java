@@ -41,6 +41,8 @@ public class ImageController {
             imageResponse.setDescription(image.getDescription());
             imageResponse.setName(image.getName());
             imageResponse.setOwnerId(image.getOwnerId());
+            imageResponse.setCurrentRating(image.getCurrentRating());
+            imageResponse.setNumberOfRatings(image.getNumberOfRatings());
             listOfImages.add(imageResponse);
         }
         return listOfImages;
@@ -59,6 +61,8 @@ public class ImageController {
             imageResponse.setDescription(image.getDescription());
             imageResponse.setName(image.getName());
             imageResponse.setOwnerId(image.getOwnerId());
+            imageResponse.setCurrentRating(image.getCurrentRating());
+            imageResponse.setNumberOfRatings(image.getNumberOfRatings());
             listOfImages.add(imageResponse);
         }
         return listOfImages;
@@ -111,9 +115,9 @@ public class ImageController {
     }
 
 
-    @PutMapping("/add_rating/{image_id}")
-    ImageRating saveImageRating(@RequestBody ImageRating imageRating,@PathVariable Long image_id){
-        Image dbImage = imageService.getImageById(image_id);
+    @PutMapping("/add_rating")
+    ImageRating saveImageRating(@RequestBody ImageRating imageRating){
+        Image dbImage = imageService.getImageById(imageRating.getImageId());
         Double currentRating = dbImage.getCurrentRating();
         Integer numberOfRatings = dbImage.getNumberOfRatings();
         ImageRating dbRating = imageService.getImageRating(imageRating.getOwnerId(), imageRating.getImageId());
