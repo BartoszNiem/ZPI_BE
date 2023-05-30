@@ -68,6 +68,24 @@ public class ImageController {
         return listOfImages;
     }
 
+    @GetMapping("/imagedata/{image_id}")
+    public ImageResponse getImageData(@PathVariable Long image_id) throws IOException {
+        Image image = imageService.getImageById(image_id);
+        ImageResponse imageResponse = new ImageResponse();
+        imageResponse.setId(image.getId());
+        imageResponse.setUsername(image.getUsername());
+        imageResponse.setCategory(image.getCategory());
+        imageResponse.setDate(image.getDate());
+        imageResponse.setImageData(imageService.downloadImageFromFileSystem(image.getName()));
+        imageResponse.setDescription(image.getDescription());
+        imageResponse.setName(image.getName());
+        imageResponse.setOwnerId(image.getOwnerId());
+        imageResponse.setCurrentRating(image.getCurrentRating());
+        imageResponse.setNumberOfRatings(image.getNumberOfRatings());
+
+        return imageResponse;
+    }
+
 //    @GetMapping("/{offset}/{pageSize}")
 //    public Page<ImageResponse> getAllImagesPagination(@PathVariable Integer offset, @PathVariable Integer pageSize) throws IOException {
 //        List<ImageResponse> listOfImages = new ArrayList<>();
@@ -103,7 +121,7 @@ public class ImageController {
 
     @PostMapping("/add_comment")
     ImageComment addComment(@RequestBody ImageComment comment){
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
+        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("CEST"));
         comment.setDate(date);
         imageService.addComment(comment);
         return comment;
