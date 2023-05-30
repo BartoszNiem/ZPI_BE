@@ -72,14 +72,6 @@ public class PostController {
         return postResponse;
     }
 
-    @PostMapping("/add_comment")
-    PostComments addComment(@RequestBody PostComments comment){
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("CEST"));
-        comment.setDate(date);
-        postService.addComment(comment);
-        return comment;
-    }
-
     @GetMapping("/get_comments/{post_id}")
     List<PostComments> getPostComments(@PathVariable Long post_id){
         return postService.getPostComments(post_id);
