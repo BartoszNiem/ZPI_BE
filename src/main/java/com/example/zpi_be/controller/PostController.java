@@ -45,7 +45,7 @@ public class PostController {
         Post post = new Post();
         post.setContent(postRequest.getContent());
         post.setOwnerId(user.getId());
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
+        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("CEST"));
         post.setDate(date);
         postService.savePost(post);
         return post;
@@ -70,23 +70,6 @@ public class PostController {
         postResponse.setContent(post.getContent());
         postResponse.setId(post.getId());
         return postResponse;
-    }
-
-    @PostMapping("/add_comment")
-    PostComments addComment(@RequestBody PostCommentRequest comment){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("GMT"));
-        String email = userDetails.getUsername();
-        User user = userService.getUserByEmail(email);
-        PostComments postComments = new PostComments();
-        postComments.setContent(comment.getContent());
-        postComments.setPostId(comment.getPostId());
-        postComments.setUsername(user.getUsername());
-        postComments.setUserId(user.getId());
-        postComments.setDate(date);
-        postService.addComment(postComments);
-        return postComments;
     }
 
     @GetMapping("/get_comments/{post_id}")
