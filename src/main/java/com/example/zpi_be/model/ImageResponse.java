@@ -15,6 +15,10 @@ public class ImageResponse {
     private Integer category;
     private String description;
     private ZonedDateTime date;
+
+    private Double currentRating;
+
+    private Integer numberOfRatings;
     public ImageResponse() {
     }
 
@@ -26,6 +30,22 @@ public class ImageResponse {
         this.category = category;
         this.description = description;
         this.date = date;
+    }
+
+    public Double getCurrentRating() {
+        return currentRating;
+    }
+
+    public void setCurrentRating(Double currentRating) {
+        this.currentRating = currentRating;
+    }
+
+    public Integer getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void setNumberOfRatings(Integer numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 
     public String getUsername() {

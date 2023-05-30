@@ -32,7 +32,29 @@ public class Image {
 
     @Column(name="date_time")
     private ZonedDateTime date;
+
+    @Column(name="current_rating", columnDefinition="DOUBLE(10,2)" )
+    private Double currentRating;
+    @Column(name = "number_of_ratings")
+    private Integer numberOfRatings;
+
     public Image() {
+    }
+
+    public Double getCurrentRating() {
+        return currentRating;
+    }
+
+    public void setCurrentRating(Double currentRating) {
+        this.currentRating = currentRating;
+    }
+
+    public Integer getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void setNumberOfRatings(Integer numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 
     public String getUsername() {
