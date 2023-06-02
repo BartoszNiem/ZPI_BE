@@ -90,6 +90,13 @@ public class UserController {
     }
 
 
-
+    @DeleteMapping("delete_user/{user_id}")
+    User deleteUserById(@PathVariable Long user_id){
+        User dbUser = userService.getUserById(user_id);
+        if(dbUser != null){
+            userService.deleteUserById(user_id);
+        }
+        return dbUser;
+    }
 
 }

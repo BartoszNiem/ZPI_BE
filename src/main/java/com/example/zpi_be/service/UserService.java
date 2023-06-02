@@ -40,4 +40,8 @@ public class UserService  {
             throw new UsernameNotFoundException("User with id " + id + " not found.");
         }
     }
+
+    public void deleteUserById(Long userId) {
+        repo.deleteById(userId);
+    }
 }

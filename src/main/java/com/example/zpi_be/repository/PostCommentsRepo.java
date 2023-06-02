@@ -12,4 +12,6 @@ import java.util.List;
 public interface PostCommentsRepo extends JpaRepository<PostComments, Long> {
     @Query("SELECT posts FROM PostComments posts WHERE posts.postId = ?1")
     List<PostComments> getCommentsByPostId(Long postId);
+    @Query("DELETE FROM PostComments posts WHERE posts.postId = ?1")
+    void deleteCommentByPostId(Long postId);
 }

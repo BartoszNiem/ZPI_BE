@@ -31,7 +31,7 @@ public class ImageController {
     @GetMapping("")
     public List<ImageResponse> getAllImages() throws IOException {
         List<ImageResponse> listOfImages = new ArrayList<>();
-        for (Image image: imageService.getAllImages()) {
+        for (Image image : imageService.getAllImages()) {
             ImageResponse imageResponse = new ImageResponse();
             imageResponse.setId(image.getId());
             imageResponse.setUsername(image.getUsername());
@@ -51,7 +51,7 @@ public class ImageController {
     @GetMapping("/{user_id}")
     public List<ImageResponse> getAllUsersImages(@PathVariable Long user_id) throws IOException {
         List<ImageResponse> listOfImages = new ArrayList<>();
-        for (Image image: imageService.getAllUsersImagesById(user_id)) {
+        for (Image image : imageService.getAllUsersImagesById(user_id)) {
             ImageResponse imageResponse = new ImageResponse();
             imageResponse.setId(image.getId());
             imageResponse.setUsername(image.getUsername());
@@ -108,9 +108,8 @@ public class ImageController {
 //    }
 
 
-
     @PostMapping("/newImage/{user_id}/{category}/{description}")
-    public Image saveNewImage(@RequestParam("image") MultipartFile file, @PathVariable Long user_id, @PathVariable Integer category, @PathVariable String description){
+    public Image saveNewImage(@RequestParam("image") MultipartFile file, @PathVariable Long user_id, @PathVariable Integer category, @PathVariable String description) {
         try {
             User dbUser = userService.getUserById(user_id);
             return imageService.saveNewImage(file, dbUser, category, description);
@@ -120,26 +119,26 @@ public class ImageController {
     }
 
     @PostMapping("/add_comment")
-    ImageComment addComment(@RequestBody ImageComment comment){
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("CEST"));
+    ImageComment addComment(@RequestBody ImageComment comment) {
+        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("CEST"));
         comment.setDate(date);
         imageService.addComment(comment);
         return comment;
     }
 
     @GetMapping("/get_comments/{image_id}")
-    List<ImageComment> getPostComments(@PathVariable Long image_id){
+    List<ImageComment> getPostComments(@PathVariable Long image_id) {
         return imageService.getImageComments(image_id);
     }
 
 
     @PutMapping("/add_rating")
-    ImageRating saveImageRating(@RequestBody ImageRating imageRating){
+    ImageRating saveImageRating(@RequestBody ImageRating imageRating) {
         Image dbImage = imageService.getImageById(imageRating.getImageId());
         Double currentRating = dbImage.getCurrentRating();
         Integer numberOfRatings = dbImage.getNumberOfRatings();
         ImageRating dbRating = imageService.getImageRating(imageRating.getOwnerId(), imageRating.getImageId());
-        if(dbRating != null){
+        if (dbRating != null) {
             Double current_rating_mod = (currentRating * numberOfRatings) - dbRating.getRating();
             current_rating_mod += imageRating.getRating();
             current_rating_mod /= numberOfRatings;
@@ -149,8 +148,7 @@ public class ImageController {
             dbRating.setRating(imageRating.getRating());
             imageService.saveRating(dbRating);
             return dbRating;
-        }
-        else{
+        } else {
             Double current_rating_mod = (currentRating * numberOfRatings);
             current_rating_mod += imageRating.getRating();
             numberOfRatings++;
@@ -163,6 +161,25 @@ public class ImageController {
             return imageRating;
         }
 
+    }
+
+    @DeleteMapping("delete_image_comment/{comment_id}")
+    ImageComment deletePostCommentById(@PathVariable Long comment_id) {
+        ImageComment dbComment = imageService.getCommentById(comment_id);
+        if (dbComment != null) {
+            imageService.deleteCommentById(comment_id);
+        }
+        return dbComment;
+    }
+
+    @DeleteMapping("delete_image/{image_id}")
+    Image deleteImageById(@PathVariable Long image_id) {
+        Image dbImage = imageService.getImageById(image_id);
+        if (dbImage != null) {
+            imageService.deleteImageById(image_id);
+            imageService.deleteCommentsByImageId(image_id);
+        }
+        return dbImage;
     }
 
 }

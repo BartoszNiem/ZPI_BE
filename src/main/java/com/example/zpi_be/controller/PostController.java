@@ -57,6 +57,7 @@ public class PostController {
         try {
             dbPost = postService.findPostById(post_id);
             postService.deletePostById(post_id);
+            postService.deleteCommentsByPostId(post_id);
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
@@ -97,5 +98,12 @@ public class PostController {
     @GetMapping("/get_comments/{post_id}")
     List<PostComments> getPostComments(@PathVariable Long post_id){
         return postService.getPostComments(post_id);
+    }
+
+    @DeleteMapping("delete_post_comment/{comment_id}")
+    PostComments deletePostCommentById(@PathVariable Long comment_id){
+        PostComments dbComment = postService.getCommentById(comment_id);
+        postService.deleteCommentById(comment_id);
+        return dbComment;
     }
 }

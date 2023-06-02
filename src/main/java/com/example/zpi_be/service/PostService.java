@@ -62,6 +62,17 @@ public class PostService {
     }
 
 
+    public PostComments getCommentById(Long commentId) {
+        return postCommentsRepo.findById(commentId).get();
+    }
+
+    public void deleteCommentById(Long commentId) {
+        postCommentsRepo.deleteById(commentId);
+    }
+
+    public void deleteCommentsByPostId(Long postId) {
+        postCommentsRepo.deleteCommentByPostId(postId);
+    }
 }
 
 

@@ -14,4 +14,6 @@ import java.util.List;
 public interface ImageCommentRepo extends JpaRepository<ImageComment, Long> {
     @Query("SELECT images FROM ImageComment images WHERE images.imageId = ?1")
     List<ImageComment> getCommentsByImageId(Long imageId);
+    @Query("DELETE  FROM ImageComment images WHERE images.imageId = ?1")
+    void deleteAllByImageId(Long imageId);
 }
