@@ -105,4 +105,20 @@ public class ImageService {
         imageRatingRepo.save(dbRating);
         return dbRating;
     }
+
+    public ImageComment getCommentById(Long commentId) {
+        return imageCommentRepo.findById(commentId).get();
+    }
+
+    public void deleteCommentById(Long commentId) {
+        imageCommentRepo.deleteById(commentId);
+    }
+
+    public void deleteImageById(Long imageId) {
+        imageRepo.deleteById(imageId);
+    }
+
+    public void deleteCommentsByImageId(Long imageId) {
+        imageCommentRepo.deleteAllByImageId(imageId);
+    }
 }
