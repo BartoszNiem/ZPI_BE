@@ -1,15 +1,15 @@
 package com.example.zpi_be.model;
 
 public class ImageCommentRequest {
-    Long postId;
+    Long imageId;
     String content;
 
-    public Long getPostId() {
-        return postId;
+    public Long getImageId() {
+        return imageId;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setImageId(Long postId) {
+        this.imageId = postId;
     }
 
     public String getContent() {

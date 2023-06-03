@@ -123,7 +123,7 @@ public class ImageController {
 
     @PostMapping("/add_comment")
 //    ImageComment addComment(@RequestBody ImageComment comment) {
-//        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("ECT"));
+//        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("CET"));
 //        comment.setDate(date);
 //        imageService.addComment(comment);
 //        return comment;
@@ -131,12 +131,12 @@ public class ImageController {
     ImageComment addComment(@RequestBody ImageCommentRequest comment){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("ECT"));
+        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("CET"));
         String email = userDetails.getUsername();
         User user = userService.getUserByEmail(email);
         ImageComment imageComment = new ImageComment();
         imageComment.setContent(comment.getContent());
-        imageComment.setImageId((comment.getPostId()));
+        imageComment.setImageId((comment.getImageId()));
         imageComment.setUsername(user.getUsername());
         imageComment.setUserId(user.getId());
         imageComment.setDate(date);
