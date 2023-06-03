@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -119,13 +122,27 @@ public class ImageController {
     }
 
     @PostMapping("/add_comment")
-    ImageComment addComment(@RequestBody ImageComment comment) {
-        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("CEST"));
-        comment.setDate(date);
-        imageService.addComment(comment);
-        return comment;
+//    ImageComment addComment(@RequestBody ImageComment comment) {
+//        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("ECT"));
+//        comment.setDate(date);
+//        imageService.addComment(comment);
+//        return comment;
+//    }
+    ImageComment addComment(@RequestBody ImageCommentRequest comment){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("ECT"));
+        String email = userDetails.getUsername();
+        User user = userService.getUserByEmail(email);
+        ImageComment imageComment = new ImageComment();
+        imageComment.setContent(comment.getContent());
+        imageComment.setImageId((comment.getPostId()));
+        imageComment.setUsername(user.getUsername());
+        imageComment.setUserId(user.getId());
+        imageComment.setDate(date);
+        imageService.addComment(imageComment);
+        return imageComment;
     }
-
     @GetMapping("/get_comments/{image_id}")
     List<ImageComment> getPostComments(@PathVariable Long image_id) {
         return imageService.getImageComments(image_id);
