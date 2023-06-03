@@ -45,7 +45,7 @@ public class PostController {
         Post post = new Post();
         post.setContent(postRequest.getContent());
         post.setOwnerId(user.getId());
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("CEST"));
+        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("ECT"));
         post.setDate(date);
         postService.savePost(post);
         return post;
@@ -75,7 +75,7 @@ public class PostController {
 
     @PostMapping("/add_comment")
 //    PostComments addComment(@RequestBody PostComments comment) {
-//        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("CEST"));
+//        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("ECT"));
 //        comment.setDate(date);
 //        postService.addComment(comment);
 //        return comment;
@@ -83,7 +83,7 @@ public class PostController {
     PostComments addComment(@RequestBody PostCommentRequest comment){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("CEST"));
+        ZonedDateTime date = LocalDateTime.now().atZone(ZoneId.of("ECT"));
         String email = userDetails.getUsername();
         User user = userService.getUserByEmail(email);
         PostComments postComments = new PostComments();

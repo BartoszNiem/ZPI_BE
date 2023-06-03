@@ -61,7 +61,7 @@ public class ImageService {
         image.setCurrentRating(5.00);
         image.setNumberOfRatings(1);
 
-        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("CEST"));
+        ZonedDateTime date= LocalDateTime.now().atZone(ZoneId.of("ECT"));
         image.setDate(date);
         imageRepo.save(image);
         file.transferTo(new File(filePath));
