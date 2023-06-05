@@ -102,7 +102,7 @@ public class PostController {
         return postService.getPostComments(post_id);
     }
 
-    @DeleteMapping("delete_post_comment/{comment_id}")
+    @DeleteMapping("/delete_post_comment/{comment_id}")
     PostComments deletePostCommentById(@PathVariable Long comment_id){
         PostComments dbComment = postService.getCommentById(comment_id);
         postService.deleteCommentById(comment_id);
