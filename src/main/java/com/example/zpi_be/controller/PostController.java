@@ -57,7 +57,9 @@ public class PostController {
         try {
             dbPost = postService.findPostById(post_id);
             postService.deletePostById(post_id);
-            postService.deleteCommentsByPostId(post_id);
+            if(postService.getPostComments(post_id).size() != 0){
+                postService.deleteCommentsByPostId(post_id);
+            }
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
