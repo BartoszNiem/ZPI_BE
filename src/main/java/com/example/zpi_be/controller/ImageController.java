@@ -179,12 +179,12 @@ public class ImageController {
         }
 
     }
-    @GetMapping("get_user_rating/{image_id}/{user_id}")
+    @GetMapping("/get_user_rating/{image_id}/{user_id}")
     ImageRating getUsersImageRating(@PathVariable Long image_id, Long user_id){
         return imageService.getImageRating(user_id, image_id);
     }
 
-    @DeleteMapping("delete_image_comment/{comment_id}")
+    @DeleteMapping("/delete_image_comment/{comment_id}")
     ImageComment deletePostCommentById(@PathVariable Long comment_id) {
         ImageComment dbComment = imageService.getCommentById(comment_id);
         if (dbComment != null) {
@@ -193,7 +193,7 @@ public class ImageController {
         return dbComment;
     }
 
-    @DeleteMapping("delete_image/{image_id}")
+    @DeleteMapping("/delete_image/{image_id}")
     Image deleteImageById(@PathVariable Long image_id) {
         Image dbImage = imageService.getImageById(image_id);
         if (dbImage != null) {
