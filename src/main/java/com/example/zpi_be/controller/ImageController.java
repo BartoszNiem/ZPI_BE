@@ -179,6 +179,10 @@ public class ImageController {
         }
 
     }
+    @GetMapping("get_user_rating/{image_id}/{user_id}")
+    ImageRating getUsersImageRating(@PathVariable Long image_id, Long user_id){
+        return imageService.getImageRating(user_id, image_id);
+    }
 
     @DeleteMapping("delete_image_comment/{comment_id}")
     ImageComment deletePostCommentById(@PathVariable Long comment_id) {
