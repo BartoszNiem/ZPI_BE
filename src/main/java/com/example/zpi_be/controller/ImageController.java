@@ -194,7 +194,9 @@ public class ImageController {
         Image dbImage = imageService.getImageById(image_id);
         if (dbImage != null) {
             imageService.deleteImageById(image_id);
-            imageService.deleteCommentsByImageId(image_id);
+            if(imageService.getImageComments(image_id).size() != 0){
+                imageService.deleteCommentsByImageId(image_id);
+            }
         }
         return dbImage;
     }
